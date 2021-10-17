@@ -21,35 +21,39 @@
             </div>
         @endif
 
-        <form action="/noticias" method="POST" enctype="multipart/form-data">
+        <form action="/noticias/{{$noticia->id}}/edit" method="POST" enctype="multipart/form-data">
             @csrf
+            @method('PUT')
 
             <div class="form-group">
                 <label for="titulo">Título</label>
-                <input type="text" name="titulo" placeholder="Digite o título da notícia" class="form-control">
+                <input type="text" name="titulo" value="{{$noticia->titulo}}" class="form-control">
             </div>
 
             <div class="form-group">
                 <label for="conteudo">Conteúdo</label>
-                <textarea name="conteudo" placeholder="Digite o conteúdo da notícia" class="form-control" rows="5"></textarea>
+                <textarea name="conteudo"  class="form-control" rows="5"  >{{$noticia->conteudo}}</textarea>
             </div>
 
             <div class="form-group">
                 <label for="imagem">Imagem Destaque</label>
                 <input type="file" name="imagem"/>
+                @if ($noticia->imagem)
+                    <img src="{{$noticia->imagem}}" height="80px" class="d-block">
+                @endif
             </div>
 
             <div class="form-group">
                 <label for="status">Status</label>
                 <select name="status" class="form-control">
-                    <option value="A">Ativo</option>
-                    <option value="I">Inativo</option>
+                    <option value="A" {{ $noticia->status == "A" ? "selected='selected'" : "" }}>Ativo</option>
+                    <option value="I" {{ $noticia->status == "I" ? "selected='selected'" : "" }}>Inativo</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="data_publicacao">Data da Publicação</label>
-                <input type="text" name="data_publicacao" class="form-control" data-provide="datepicker" data-date-language="pt-BR">
+                <input type="text" name="data_publicacao" class="form-control" data-provide="datepicker" data-date-language="pt-BR" value="{{ Carbon\Carbon::createFromFormat('Y-m-d' , $noticia->data_publicacao)->format('d/m/Y') }}">
             </div>
 
             <button type="submit" class="btn btn-primary">Salvar</button>
