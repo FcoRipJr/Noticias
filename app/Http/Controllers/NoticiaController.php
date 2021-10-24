@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\NoticiaRequest;
 use App\Models\Noticia;
 use Carbon\Carbon;
 
@@ -19,11 +20,28 @@ class NoticiaController extends Controller
 
     }
 
+    public function showAtivas(){
+      
+        $noticias = Noticia::all();
+        return view('noticias.index',[
+            'noticias' => Noticia::where('status',Noticia::STATUS_ATIVO)->get()
+        ]);
+    }
+
+    public function showInativas(){
+      
+        $noticias = Noticia::all();
+        return view('noticias.index',[
+            'noticias' => Noticia::where('status',Noticia::STATUS_INATIVO)->get()
+        ]);
+    }
+
+    
     public function create(){
         return view('noticias.create');
     }
 
-    public function store(Request $request){
+    public function store(NoticiaRequest $request){
         $dados = $request->all();
         $dados['data_publicacao'] = Carbon::createFromFormat('d/m/Y', $dados['data_publicacao'])->format('Y-m-d');
         $request->imagem->storeAs('public', $request->imagem->getClientOriginalName());
@@ -42,7 +60,7 @@ class NoticiaController extends Controller
         ]);
     }
 
-    public function update($noticia, Request $request)
+    public function update($noticia, NoticiaRequest $request)
     {
         $noticia = Noticia::findOrFail($noticia);
         $dados = $request->all();

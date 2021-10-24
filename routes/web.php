@@ -25,3 +25,5 @@ Route::post('noticias', [NoticiaController::class, 'store']);
 Route::get('noticias/{noticia}/edit', [NoticiaController::class, 'edit']); 
 Route::put('noticias/{noticia}/edit', [NoticiaController::class, 'update']); 
 Route::delete('noticias/{noticia}', [NoticiaController::class, 'destroy']); 
+Route::get('noticias/ativas', [App\Http\Controllers\NoticiaController::class, 'showAtivas']);
+Route::get('noticias/inativas', [App\Http\Controllers\NoticiaController::class, 'showInativas']);
