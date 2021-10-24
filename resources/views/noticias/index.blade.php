@@ -49,7 +49,7 @@
                 @endforeach
             </tbody>
         </table>
-    
+        {{ $noticias->links() }} 
     </div>
 
 </x-master>
