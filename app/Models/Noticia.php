@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use App\Models\Comentario;
+use App\Models\Categoria;
+use App\Models\NoticiaCategoria;
 
 
 class Noticia extends Model
@@ -30,6 +33,16 @@ class Noticia extends Model
     public function setDataPublicacaoAttribute($value)
     {
         $this->attributes['data_publicacao'] = Carbon::createFromFormat("d/m/Y", $value)->format("Y-m-d");
+    }
+
+    public function comentarios()
+    {
+        return $this->hasMany(Comentario::class);
+    }
+
+    public function noticias_categorias()
+    {
+        return $this->hasMany(NoticiaCategoria::class);
     }
 
 

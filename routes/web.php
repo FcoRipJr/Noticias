@@ -18,6 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Route::resource('noticias', NoticiaController::class);
 
 Route::get('noticias', [App\Http\Controllers\NoticiaController::class, 'index']);
 Route::get('noticias/create', [App\Http\Controllers\NoticiaController::class, 'create']);

@@ -1,3 +1,4 @@
+
 <x-master title="Lista">
 
     <div class="container pt-5">
@@ -36,6 +37,7 @@
                         <td>
                             <a href="/noticias/{{ $noticia->id }}/edit" class="btn btn-warning btn-sm">Editar</a>
                             <form action="/noticias/{{ $noticia->id }}" class="d-inline-block" method="POST" onsubmit="confirmarExclusao(event)">
+                            
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
@@ -73,7 +75,7 @@
                 @endforeach
             </tbody>
         </table>
-        {{ $noticias->links() }} 
     </div>
 
 </x-master>
+

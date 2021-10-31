@@ -1,0 +1,141 @@
+   docker-compose exec --user=flexdock php7 bash
+   cd noticias
+   php artisan make:migration create_categorias_table
+
+     public function up()
+     {
+        Schema::create('categorias', function (Blueprint $table) {
+            $table->id();
+            $table->string('categoria', 100);
+            $table->timestamps();
+        });
+     }
+
+   php artisan make:migration create_noticias_categorias_table
+
+    public function up()
+    {
+        Schema::create('noticias_categorias', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('noticia_id')->nullable();
+            $table->foreign('noticia_id')
+            ->references('id')
+            ->on('noticias')
+            ->onUpdate('restrict')
+            ->onDelete('restrict');
+
+            $table->unsignedBigInteger('categoria_id')->nullable();
+            $table->foreign('categoria_id')
+            ->references('id')
+            ->on('categorias')
+            ->onUpdate('restrict')
+            ->onDelete('restrict');
+            $table->timestamps();
+        });
+    }
+
+   Rodar as migrates
+   php artisan migrate
+
+   Criar a model para categoria (no singular)
+   php artisan make:model Categoria
+
+   Criar a model para NoticiaCategoria (no singular)
+   php artisan make:model NoticiaCategoria
+
+   Adicionar o método de relacionamento na model Noticias
+   public function categorias()
+   {
+       return $this->belongsToMany(Categoria::class, 'noticias_categorias');
+   }
+   (model_destino, nome_tabela_intermediaria)
+   (Categoria:class,'noticias_categorias')
+
+   Criar a seed para Categorias
+   php artisan make:seed CategoriaSeeder
+   
+   Criar a seed para Noticias_Categorias
+   php artisan make:seed Noticia_CategoriaSeeder
+  
+   Povoar a seed Categorias
+
+    use App\Models\Categoria;
+    public function run()
+    {
+        Categoria::create([
+            "categoria" => "Política"
+        ]);
+
+        Categoria::create([
+            "categoria" => "Esportes"
+        ]);
+
+        Categoria::create([
+            "categoria" => "Economia"
+        ]);
+
+        Categoria::create([
+            "categoria" => "Eleições"
+        ]);
+
+        Categoria::create([
+            "categoria" => "Laser"
+        ]);
+
+        Categoria::create([
+            "categoria" => "Entretenimento"
+        ]);
+    }
+   
+    Rodar a seed CategoriaSeeder
+    php artisan db:seed --class=CategoriaSeeder
+           
+    Povoar a seed NoticiaCategoria
+    use App\Models\NoticiaCategoria;
+
+     public function run()
+     {
+        Noticia_Categoria::create([
+            "noticia_id" =>"4",
+            "categoria_id" => "1"
+        ]);
+
+        Noticia_Categoria::create([
+            "noticia_id" =>"4",
+            "categoria_id" => "2"
+        ]);
+
+        Noticia_Categoria::create([
+            "noticia_id" =>"3",
+            "categoria_id" => "3"
+        ]);
+
+        Noticia_Categoria::create([
+            "noticia_id" =>"2",
+            "categoria_id" => "1"
+        ]);
+
+        Noticia_Categoria::create([
+            "noticia_id" =>"2",
+            "categoria_id" => "4"
+        ]);
+    }
+  
+    Rodar a seed Notica_CategoriaSeeder
+    php artisan db:seed --class=Noticia_CategoriaSeeder
+  
+    Hummmm, deu errado?
+
+    SQLSTATE[42S02]: Base table or view not found: 1146 Table 'noticias.noticia_categorias' doesn't exist (SQL: insert into `noticia_categorias` (`noticia_id`, `categoria_id`, `updated_at`, `created_at`) values (1, 1, 2021-10-27 00:10:12, 2021-10-27 00:10:12))
+    Olha o nome da tabela noticia_categoriaS na mensagem de erro!
+  
+    Lembra que falamos que criamos a model no singular porque o laravel coloca um ``s`` no final do nome para ficar igual ao nome da tabela?
+  
+    Como nesse caso a tabela chama noticia_categoria, ele irá colocar noticia_categorias então tem que setar a tabela.
+
+    Na model NoticiaCategoria
+    class NoticiaCategoria extends Model
+    {
+      use HasFactory;
+      protected $table = "noticias_categorias"
+    }

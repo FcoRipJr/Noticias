@@ -66,6 +66,13 @@
 
         </form>
 
+        <h4 class="mt-4">Comentários</h4>
+        @foreach ($noticia->comentarios as $comentario)
+            <div>
+                {{ $comentario->conteudo }}
+                <p class="text-muted">Criado em: {{ $comentario->created_at->format('d/m/Y H:i') }}</p>
+            </div>
+        @endforeach
 
     </div>
 
