@@ -15,6 +15,10 @@ class CategoriaSeeder extends Seeder
     public function run()
     {
         Categoria::create([
+            "categoria" => "Política",
+        ]);
+        
+        Categoria::create([
             "categoria" => "Esporte",
         ]);
 

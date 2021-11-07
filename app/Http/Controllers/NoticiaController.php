@@ -21,7 +21,7 @@ class NoticiaController extends Controller
 
     }
 
-    public function showAtivas(){
+    public function ativasShow(){
       
         $noticias = Noticia::all();
         return view('noticias.index',[
@@ -29,7 +29,7 @@ class NoticiaController extends Controller
         ]);
     }
 
-    public function showInativas(){
+    public function inativasShow(){
       
         $noticias = Noticia::all();
         return view('noticias.index',[

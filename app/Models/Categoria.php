@@ -17,4 +17,9 @@ class Categoria extends Model
         return $this->hasMany(NoticiaCategoria::class);
     }
 
+    public function noticias()
+    {
+        return $this->hasMany(Noticia::class);
+    }
+
    }

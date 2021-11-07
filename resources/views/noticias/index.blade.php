@@ -1,7 +1,22 @@
-<x-master title="Lista">
+@extends('adminlte::page')
 
-    <div class="container pt-5">
+@section('title', 'Notícias')
 
+@section('content_header')
+<h1 class="m-0 text-dark"><i class="fas fa-home"></i> Notícias
+    <small class="text-muted">- Index</small>
+</h1>
+@stop
+
+@section('content')
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
+            Tabela de Notícias
+        </h3>
+    </div>
+
+    <div class="card-body">
         @if(session()->has('mensagem'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session()->get('mensagem') }}
@@ -11,6 +26,7 @@
             </div>
         @endif
 
+
         <a href="/noticias/create" class="btn btn-primary mb-5">Nova Notícia</a>
         </br>
         <a href="/noticias" class="btn btn-light mb-5">Todas</a>
@@ -19,8 +35,8 @@
         
        
     
-        <table class="table table-striped table-hover table-responsive-md">
-            <thead class="thead-light">
+        <table class="table table-striped">
+            <thead>
                 <tr>
                     <th>Ações</th>
                     <th>Título</th>
@@ -34,46 +50,51 @@
                 @foreach ($noticias as $noticia)
                     <tr>
                         <td>
-                            <a href="/noticias/{{ $noticia->id }}/edit" class="btn btn-warning btn-sm">Editar</a>
-                            <form action="/noticias/{{ $noticia->id }}" class="d-inline-block" method="POST" onsubmit="confirmarExclusao(event)">
+                            <a href="/noticias/{{ $noticia->id }}/edit" class="btn btn-primary btn-sm">Editar</a>
+                            <form action="/noticias/{{ $noticia->id }}" class="d-inline-block" method="POST" onSubmit="confirmarExclusao(event)">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
-                                <script>
-                                    function confirmarExclusao(event) {
-                                        event.preventDefault();
-                                        swal({
-                                            title: "Você tem certeza que deseja excluir o registro?",
-                                            icon: "warning",
-                                            dangerMode: true,
-                                            buttons: {
-                                                cancel: "Cancelar",
-                                                catch: {
-                                                    text: "Excluir",
-                                                    value: true,
-                                                },
-                                            }
-                                        })
-                                        .then((willDelete) => {
-                                            if (willDelete) {
-                                                event.target.submit();
-                                            } else {
-                                                return false;
-                                            }
-                                        });
-                                    }
-                                </script>
+                                <button class="btn btn-sm btn-danger">Excluir</button>
+                               
                             </form>
                         </td>
                         <td>{{ $noticia->titulo }}</td>
                         <td>{{ $noticia->status_formatado }}</td>
-                        <td>{{ optional($noticia->data_publicacao)->format("d/m/Y") }}</td>
+                        <td>{{ $noticia->data_publicacao->format("d/m/Y") }}</td>
                         <td><img src="{{ $noticia->imagem}}" height="40px"></td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
-        {{ $noticias->links() }} 
+        
+        {{ $noticias->links() }}
     </div>
+    
+</div>
 
-</x-master>
+<!-- <script>
+    function confirmarExclusao(event) {
+        event.preventDefault();
+        swal({
+            title: "Você tem certeza que deseja excluir o registro?",
+            icon: "warning",
+            dangerMode: true,
+            buttons: {
+                cancel: "Cancelar",
+                catch: {
+                    text: "Excluir",
+                    value: true,
+                },
+            }
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                event.target.submit();
+            } else {
+                return false;
+            }
+        });
+    }
+</script> -->
+@stop
+
