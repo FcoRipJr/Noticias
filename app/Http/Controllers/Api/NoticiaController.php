@@ -35,8 +35,7 @@ class NoticiaController extends Controller
         return $noticia;
     }
 
-    public function destroy(Noticia $noticia)
-    {
+    public function destroy(Noticia $noticia){
         return $noticia->delete();
     }
 
